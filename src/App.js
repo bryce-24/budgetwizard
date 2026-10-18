@@ -584,7 +584,7 @@ function ProposalStep({ onCreateProposal, users, rates, institutions, onNext }) 
   // Shared helper for personnel entries: applies the field update and, when the
   // changed field drives salary (hourly_rate, y1_hours, effort_percentage),
   // recalculates the effort-adjusted salary across all year fields (y1-y5).
-  const calculateEffortAdjustedSalary = (item, field, value) => {
+  const applyEffortAdjustedSalaryUpdate = (item, field, value) => {
     const updatedItem = { ...item, [field]: value };
 
     if (field === 'hourly_rate' || field === 'y1_hours' || field === 'effort_percentage') {
@@ -622,7 +622,7 @@ function ProposalStep({ onCreateProposal, users, rates, institutions, onNext }) 
       // Auto-calculate salary for PI if hourly_rate, y1_hours, or effort_percentage changes
       if (category === 'personnel' && item === 'pi' &&
           (field === 'hourly_rate' || field === 'y1_hours' || field === 'effort_percentage')) {
-        categoryData[item] = calculateEffortAdjustedSalary(itemData, field, value);
+        categoryData[item] = applyEffortAdjustedSalaryUpdate(itemData, field, value);
         updatedData[category] = categoryData;
         return updatedData;
       }
@@ -660,7 +660,7 @@ function ProposalStep({ onCreateProposal, users, rates, institutions, onNext }) 
   const updateCoPIField = (index, field, value) => {
     setBudgetData(prev => {
       const updatedCoPIs = prev.personnel.co_pis.map((coPi, i) =>
-        i === index ? calculateEffortAdjustedSalary(coPi, field, value) : coPi
+        i === index ? applyEffortAdjustedSalaryUpdate(coPi, field, value) : coPi
       );
 
       return {
@@ -696,7 +696,7 @@ function ProposalStep({ onCreateProposal, users, rates, institutions, onNext }) 
   const updateFacultyField = (index, field, value) => {
     setBudgetData(prev => {
       const updatedFaculty = (prev.personnel.faculty || []).map((faculty, i) =>
-        i === index ? calculateEffortAdjustedSalary(faculty, field, value) : faculty
+        i === index ? applyEffortAdjustedSalaryUpdate(faculty, field, value) : faculty
       );
 
       return {
@@ -732,7 +732,7 @@ function ProposalStep({ onCreateProposal, users, rates, institutions, onNext }) 
   const updateStudentField = (index, field, value) => {
     setBudgetData(prev => {
       const updatedStudents = (prev.other_personnel.gras_ugrads || []).map((student, i) =>
-        i === index ? calculateEffortAdjustedSalary(student, field, value) : student
+        i === index ? applyEffortAdjustedSalaryUpdate(student, field, value) : student
       );
 
       return {
