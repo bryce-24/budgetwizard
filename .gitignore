@@ -1,0 +1,19 @@
+# Node
+node_modules/
+build/
+npm-debug.log*
+
+# Python
+backend/__pycache__/
+backend/*.pyc
+*.pyc
+__pycache__/
+
+# Environment / secrets
+.env
+.env.local
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
